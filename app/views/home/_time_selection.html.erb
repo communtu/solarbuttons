@@ -1,3 +1,4 @@
+Wann soll die Maschine spätestens fertig sein?<br>
 <% (0..session[:time].length-1).each do |digit| %>
 <% if digit == 1 %>
 :
@@ -5,7 +6,7 @@
 <% if digit == session[:tindex] then %>
 <b>
 <% end %>
-<%=if session[:time][digit] == 0 then "00" else session[:time][digit] end =%>
+<%=if session[:time][digit].to_s.length == 1 then "0#{session[:time][digit].to_s}" else session[:time][digit] end =%>
 <% if digit == session[:tindex] then %>
 </b>
 <% end %>
