@@ -1,11 +1,11 @@
 <% (0..session[:time].length-1).each do |digit| %>
-<% if digit == 2 %>
+<% if digit == 1 %>
 :
 <% end  %>
 <% if digit == session[:tindex] then %>
 <b>
 <% end %>
-<%=session[:time][digit]=%>
+<%=if session[:time][digit] == 0 then "00" else session[:time][digit] end =%>
 <% if digit == session[:tindex] then %>
 </b>
 <% end %>

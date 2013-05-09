@@ -1,3 +1,5 @@
+require 'scanf'
+
 MAIN_MENU = 0
 PROGRAM_SELECTION = 1
 TIME_SELECTION = 2
@@ -11,8 +13,8 @@ class HomeController < ApplicationController
     session[:level] = 0 if session[:level].blank?
     session[:tindex] = 0 if session[:tindex].blank?
     if session[:time].blank? then
-      session[:time] = Time.now.strftime("%H%M").split('')
-      session[:time].map! { |i| i.to_i }
+      session[:time] = Time.now.strftime("%H%M").scanf("%2d"*2)
+      session[:time][1] -= session[:time][1]%15
     end
 
     @device = OURDEVICES.to_a[session[:device].to_i]
@@ -45,13 +47,13 @@ class HomeController < ApplicationController
            then session[:level] -= 1
            else session[:menu] -= 1
            end
-       end           
+        end
       when TIME_SELECTION then
         case params[:dir]
           when 'right' then session[:tindex]+=1
-            if session[:tindex] > 3 then
+            if session[:tindex] > 1 then
               session[:menu] += 1 
-              session[:tindex] = 3
+              session[:tindex] = 1
             end
           when 'left' then session[:tindex]-=1
             if session[:tindex] < 0 then 
@@ -59,18 +61,17 @@ class HomeController < ApplicationController
               session[:tindex] = 0
             end
           when 'center' then session[:menu] += 1
-          when 'up', 'down' then 
-            session[:time][session[:tindex]] += if params[:dir] == 'up' then 1 else -1 end
-            case session[:tindex]
-              when 0 then session[:time][session[:tindex]] %= 3
-              when 1 then session[:time][session[:tindex]] %= if session[:time][0] == 2 then 4 else 10 end
-              when 2 then session[:time][session[:tindex]] %= 6
-              when 3 then session[:time][session[:tindex]] %= 10
-              end
-          end
-      when WAIT_FOR_START then
-        if params[:dir] == 'left' then session[:menu] -= 1 else true end
-      end
+          when 'up', 'down' then
+            if session[:tindex] == 0 then
+              session[:time][session[:tindex]] = (session[:time][session[:tindex]] + (params[:dir] == 'up' ? 1 : -1))%24
+            else
+              session[:time][session[:tindex]] = (session[:time][session[:tindex]] + (params[:dir] == 'up' ? 15 : -15))%60
+            end
+        end           
+     
+        when WAIT_FOR_START then
+          if params[:dir] == 'left' then session[:menu] -= 1 else true end
+    end
 
     if session[:menu] < 0 then session[:menu] = 0 end   
     if session[:level] < 0 then session[:level] = 0 end   
