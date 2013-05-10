@@ -14,11 +14,16 @@ class HomeController < ApplicationController
     session[:tindex] = 0 if session[:tindex].blank?
     if session[:time].blank? then
       session[:time] = Time.now.strftime("%H%M").scanf("%2d"*2)
-      session[:time][1] -= session[:time][1]%15
+      session[:time][0] += 2
+      session[:time][1] = session[:time][1] - session[:time][1]%15
+      session[:ref_time] = session[:time]
+      session[:day] = 0 #today
     end
-
+    @current_time = time_to_mins(session[:time])
+    @ref_time = time_to_mins(session[:ref_time])
     @device = OURDEVICES.to_a[session[:device].to_i]
   end
+
   def push_button
     @device = OURDEVICES.to_a[session[:device].to_i]
     case session[:menu]
@@ -67,12 +72,12 @@ class HomeController < ApplicationController
             else
               session[:time][session[:tindex]] = (session[:time][session[:tindex]] + (params[:dir] == 'up' ? 15 : -15))%60
             end
+            if time_to_mins(session[:ref_time]) < time_to_mins(session[:time]) then session[:day] +=1 end
         end           
      
         when WAIT_FOR_START then
           if params[:dir] == 'left' then session[:menu] -= 1 else true end
     end
-
     if session[:menu] < 0 then session[:menu] = 0 end   
     if session[:level] < 0 then session[:level] = 0 end   
     session[:device] %= NUMBER_OF_DEVICES
@@ -80,8 +85,11 @@ class HomeController < ApplicationController
     for i in (0..session[:program].length-2) do
       menu_depth = menu_depth.to_a[session[:program][i]][1] 
     end
-    session[:program][-1] %= menu_depth.length 
     redirect_to '/home/index'
+  end
+
+  def time_to_mins(time)
+    time[0]*60+time[1]
   end
   
   private

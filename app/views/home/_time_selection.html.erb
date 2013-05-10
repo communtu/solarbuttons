@@ -1,4 +1,6 @@
 Wann soll die Maschine spätestens fertig sein?<br>
+<%= if session[:day] == 0 then "Heute" else "Morgen" end =%>
+ um
 <% (0..session[:time].length-1).each do |digit| %>
 <% if digit == 1 %>
 :
@@ -6,8 +8,9 @@ Wann soll die Maschine spätestens fertig sein?<br>
 <% if digit == session[:tindex] then %>
 <b>
 <% end %>
-<%=if session[:time][digit].to_s.length == 1 then "0#{session[:time][digit].to_s}" else session[:time][digit] end =%>
+<%= "%02d" % session[:time][digit] =%>
 <% if digit == session[:tindex] then %>
 </b>
 <% end %>
 <% end %>
+ Uhr
