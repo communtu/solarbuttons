@@ -7,20 +7,26 @@ WAIT_FOR_START = 3
 
 class HomeController < ApplicationController
   def index
+    # initialize cookie
     session[:menu] = MAIN_MENU if session[:menu].blank?
     session[:device] = 0 if session[:device].blank?
     session[:program] = [0] if session[:program].blank?
     session[:level] = 0 if session[:level].blank?
     session[:tindex] = 0 if session[:tindex].blank?
+    # initialize time if neccessary and store for future reference
     if session[:time].blank? then
       session[:time] = Time.now.strftime("%H%M").scanf("%2d"*2)
       session[:time][0] += 2
       session[:time][1] = session[:time][1] - session[:time][1]%15
-      session[:ref_time] = session[:time]
+      session[:ref_time] = session[:time].clone
+      session[:day_change_thres] = day_change_thres(session[:ref_time])
       session[:day] = 0 #today
     end
+    # uncomment for debug output
     @current_time = time_to_mins(session[:time])
     @ref_time = time_to_mins(session[:ref_time])
+
+    # store current device
     @device = OURDEVICES.to_a[session[:device].to_i]
   end
 
@@ -72,7 +78,11 @@ class HomeController < ApplicationController
             else
               session[:time][session[:tindex]] = (session[:time][session[:tindex]] + (params[:dir] == 'up' ? 15 : -15))%60
             end
-            if time_to_mins(session[:ref_time]) < time_to_mins(session[:time]) then session[:day] +=1 end
+            if time_to_mins(session[:time]).between?(time_to_mins(session[:ref_time]), session[:day_change_thres]) then
+              session[:day] = 0 
+            else
+              session[:day] = 1
+            end
         end           
      
         when WAIT_FOR_START then
@@ -92,6 +102,10 @@ class HomeController < ApplicationController
     time[0]*60+time[1]
   end
   
+  def day_change_thres(time)
+    time_to_mins(time)+(24-time[0])*60+time[1]
+  end
+
   private
   def has_next(device,level,program)
     selection = device
