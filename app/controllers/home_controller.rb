@@ -95,6 +95,7 @@ class HomeController < ApplicationController
     for i in (0..session[:program].length-2) do
       menu_depth = menu_depth.to_a[session[:program][i]][1] 
     end
+    session[:program][-1] %= menu_depth.length
     redirect_to '/home/index'
   end
 
