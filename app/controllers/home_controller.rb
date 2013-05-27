@@ -16,7 +16,6 @@ class HomeController < ApplicationController
     # initialize time if neccessary and store for future reference
     if session[:time].blank? then
       session[:time] = Time.now.strftime("%H%M").scanf("%2d"*2)
-      session[:time][0] += 2
       session[:time][1] = session[:time][1] - session[:time][1]%15
       session[:ref_time] = session[:time].clone
       session[:day_change_thres] = day_change_thres(session[:ref_time])
@@ -60,6 +59,17 @@ class HomeController < ApplicationController
            end
         end
       when TIME_SELECTION then
+        program = session[:program]
+        program.length times do |n|
+          program = program[1].to_a[program[n]]
+        end
+        logger.warn "#{program.inspect}"
+
+        session[:time][0] = (session[:time][0] + @device[1].to_a[program][0])/60
+        session[:time][1] = (session[:time][1] + @device[1].to_a[program][0])%60
+        
+        adjust_day
+
         case params[:dir]
           when 'right' then session[:tindex]+=1
             if session[:tindex] > 1 then
@@ -78,12 +88,8 @@ class HomeController < ApplicationController
             else
               session[:time][session[:tindex]] = (session[:time][session[:tindex]] + (params[:dir] == 'up' ? 15 : -15))%60
             end
-            if time_to_mins(session[:time]).between?(time_to_mins(session[:ref_time]), session[:day_change_thres]) then
-              session[:day] = 0 
-            else
-              session[:day] = 1
-            end
-        end           
+            adjust_day
+        end
      
         when WAIT_FOR_START then
           if params[:dir] == 'left' then session[:menu] -= 1 else true end
@@ -97,6 +103,14 @@ class HomeController < ApplicationController
     end
     session[:program][-1] %= menu_depth.length
     redirect_to '/home/index'
+  end
+  
+  def adjust_day
+    if time_to_mins(session[:time]).between?(time_to_mins(session[:ref_time]), session[:day_change_thres]) then
+      session[:day] = 0 
+    else
+      session[:day] = 1
+    end
   end
 
   def time_to_mins(time)
