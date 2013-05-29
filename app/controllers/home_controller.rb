@@ -46,9 +46,17 @@ class HomeController < ApplicationController
             if session[:level] < session[:program].length then session[:program] = session[:program][0..session[:level]]
             end
           when 'center', 'right' then 
-            if has_next(@device,session[:level],session[:program]) then 
+            if level_descend(@device,session[:level],session[:program]).class == Hash then 
               session[:level] += 1
             else
+              duration = level_descend(@device,session[:level],session[:program])
+              puts "duration: #{duration}"
+
+              session[:time][0] = session[:time][0] + duration/60
+              session[:time][1] = session[:time][1] + duration%60
+        
+               adjust_day
+
               session[:menu] += 1
             end
             session[:program] << 0 unless session[:program].length > session[:level]
@@ -59,17 +67,6 @@ class HomeController < ApplicationController
            end
         end
       when TIME_SELECTION then
-        program = session[:program]
-        program.length times do |n|
-          program = program[1].to_a[program[n]]
-        end
-        logger.warn "#{program.inspect}"
-
-        session[:time][0] = (session[:time][0] + @device[1].to_a[program][0])/60
-        session[:time][1] = (session[:time][1] + @device[1].to_a[program][0])%60
-        
-        adjust_day
-
         case params[:dir]
           when 'right' then session[:tindex]+=1
             if session[:tindex] > 1 then
@@ -122,14 +119,14 @@ class HomeController < ApplicationController
   end
 
   private
-  def has_next(device,level,program)
+  def level_descend(device,level,program)
     selection = device
     for i in (0..level)
-      logger.warn "selection #{selection.inspect}"
-      puts "selection #{selection.inspect}"
+ #    logger.warn "selection #{selection.inspect}"
+ #    puts "selection #{selection.inspect}"
       if selection.nil? then return false end
       selection = selection[1].to_a[program[i]]
     end
-    return selection[1].to_a[0][1].class == Hash
+    return selection[1].to_a[0][1]
   end
 end
