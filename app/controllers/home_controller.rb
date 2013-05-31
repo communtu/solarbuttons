@@ -50,14 +50,14 @@ class HomeController < ApplicationController
               session[:time][1] += 15 - session[:time][1]%15
               adjust_hours_mins
 
-
               session[:ref_time] = session[:time].clone
               session[:day_change_thres] = day_change_thres(session[:ref_time])
               session[:day] = 0 #today
 
-#             @current_time = time_to_mins(session[:time])
-#             @ref_time = time_to_mins(session[:ref_time])
-
+              # debug output
+              session[:debug_curr_time] = time_to_mins(session[:time])
+              session[:debug_ref_time] = time_to_mins(session[:ref_time])
+ 
               adjust_day
 
               session[:menu] += 1
@@ -88,6 +88,9 @@ class HomeController < ApplicationController
             else
               session[:time][session[:tindex]] = (session[:time][session[:tindex]] + (params[:dir] == 'up' ? 15 : -15))%60
             end
+            # debug output
+            session[:debug_curr_time] = time_to_mins(session[:time])
+            session[:debug_ref_time] = time_to_mins(session[:ref_time])
             adjust_day
         end
      
@@ -106,7 +109,9 @@ class HomeController < ApplicationController
   end
   
   def adjust_day
-    if time_to_mins(session[:time]).between?(time_to_mins(session[:ref_time]), session[:day_change_thres]) then
+    if session[:ref_time] == [ 0, 0 ] then
+      session[:day] = 1
+    elsif time_to_mins(session[:time]).between?(time_to_mins(session[:ref_time]), session[:day_change_thres]) then
       session[:day] = 0 
     else
       session[:day] = 1
