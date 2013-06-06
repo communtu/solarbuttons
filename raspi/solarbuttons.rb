@@ -83,6 +83,7 @@ include SolarControl
       end
       y+=10
     end
+    write_frambuffer
   end
   
   def self.program_selection
