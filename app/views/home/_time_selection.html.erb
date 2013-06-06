@@ -1,3 +1,7 @@
+Dauer des gewählten Programms:
+<%= session[:duration][0] %>
+:
+<%= session[:duration][1] %>
 Wann soll die Maschine spätestens fertig sein?<br>
 <%= if session[:day] == 0 then "Heute" else "Morgen" end =%>
  um

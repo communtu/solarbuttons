@@ -41,11 +41,14 @@ class HomeController < ApplicationController
               session[:level] += 1
             else
               duration = level_descend(@device,session[:level],session[:program])
+              session[:duration] = []
+              session[:duration] << duration/60
+              session[:duration] << duration%60
               
               session[:time] = Time.now.strftime("%H%M").scanf("%2d"*2)
               
-              session[:time][0] = session[:time][0] + duration/60
-              session[:time][1] = session[:time][1] + duration%60
+              session[:time][0] = session[:time][0] + session[:duration][0]
+              session[:time][1] = session[:time][1] + session[:duration][1]
               adjust_hours_mins
               session[:time][1] += 15 - session[:time][1]%15
               adjust_hours_mins
