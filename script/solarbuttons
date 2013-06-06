@@ -1,0 +1,1 @@
+echo '$LOAD_PATH << "."; require "raspi/solarbuttons"; RaspiControl.start' > sudo irb
