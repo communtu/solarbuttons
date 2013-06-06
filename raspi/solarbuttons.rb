@@ -56,11 +56,22 @@ include SolarControl
           when TIME_SELECTION then time_selection
           when WAIT_FOR_START then wait_for_start
         end
+        #debug info        
+        puts "session[:menu]: #{session[:menu]}"
+        puts "session[:device]: #{session[:device]}"
+        puts "session[:program]: #{session[:program]}"
+        puts "session[:level]: #{session[:level]}"
+        puts "session[:time]: #{session[:time]}"
+        puts "session[:tindex]: #{session[:tindex]}"
+        puts "time_to_mins(session[:ref_time]): #{session[:debug_ref_time]}" 
+        puts "time_to_mins(session[:time]): #{session[:debug_curr_time]}" 
+        puts "session[:day_change_thres]: #{session[:day_change_thres]}"
       end  
     end
   end
   
   def self.main_menu
+    puts "main_menu"
     y = 4
     OURDEVICES.each do |name, data|
       if name == @device[0] 
@@ -73,15 +84,15 @@ include SolarControl
   end
   
   def self.program_selection
-   
+    puts "program_selection"
   end
   
   def self.time_selection
-   
+    puts "time_selection"
   end
   
   def self.wait_for_start
-   
+    puts "wait_for_start"
   end
   
 end
