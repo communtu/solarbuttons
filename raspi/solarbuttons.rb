@@ -51,6 +51,7 @@ include SolarControl
         params[:dir] = buttons.first.to_s # we assume that just one button is pressed
         @device = eval_buttons
         #display
+        clear_screen
         case session[:menu] 
           when MAIN_MENU then main_menu
           when PROGRAM_SELECTION then program_selection
