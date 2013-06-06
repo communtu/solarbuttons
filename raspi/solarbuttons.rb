@@ -125,7 +125,7 @@ include SolarControl
     e_ind = s.length-1
     if e_ind > 5 then
       s_ind = [i-2,0].max
-      e_ind = s_ind+5
+      e_ind = [s_ind+5,s.length-1].min
     end
     y = 4
     for j in (s_ind..e_ind) do
