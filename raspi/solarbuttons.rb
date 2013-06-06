@@ -42,7 +42,8 @@ include SolarControl
     init
     clear_screen
     set_backlight(1)
-    set_font(0) 
+    set_font(0)
+    main_menu 
     loop do
       update_buttons
       bp = buttons_pressed
@@ -83,7 +84,7 @@ include SolarControl
       end
       y+=10
     end
-    write_frambuffer
+    write_framebuffer
   end
   
   def self.program_selection
