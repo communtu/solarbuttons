@@ -107,14 +107,14 @@ include SolarControl
   def self.display(s,i)
     # we can display at most 6 strings
     s_ind = 0
-    e_ind = s.length
+    e_ind = s.length-1
     if e_ind > 5 then
       s_ind = [i-2,0].max
       e_ind = s_ind+5
     end
     y = 4
     for j in (s_ind..e_ind) do
-      str = s[i][0,16]
+      str = s[j][0,16]
       print_xy(0,y, str+(if i==j then "<--" else "" end)) 
       y+=10
     end
