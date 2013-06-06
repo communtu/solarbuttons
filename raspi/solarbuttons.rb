@@ -28,11 +28,15 @@ include SolarControl
     @session
   end
   
+  def self.params
+    @params
+  end
+  
   def self.start
     # initialize session and store current device
     @session = {}
+    @params = {}
     @device = init_session
-    params = {}
     # initialise raspi LCD display
     raspi_lcd_hw_init 
     init
