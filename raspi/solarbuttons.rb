@@ -78,6 +78,7 @@ include SolarControl
   def self.main_menu
     puts "main_menu"
     i=0
+    ind=0
     s=OURDEVICES.map do |name, data|
       if name == @device[0] then
         ind = i
