@@ -94,6 +94,21 @@ include SolarControl
   
   def self.program_selection
     puts "program_selection"
+    s = [@device[0]]
+    selection = @device[1].to_a
+    for level in 0..session[:level] do
+      if level==session[:level]      
+        0.upto(selection.length-1) do |device|
+          s << selection[device][0]
+        end
+      end    
+      if selection[session[:program][level]].nil? then 
+        selection = 0
+      else 
+        selection = selection[session[:program][level]][1].to_a
+      end
+    end   
+    display(s,session[:program][session[:level]]+1)
   end
   
   def self.time_selection
