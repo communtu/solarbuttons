@@ -47,7 +47,7 @@ include SolarControl
       update_buttons
       bp = buttons_pressed
       if !bp.empty?
-        params[:dir] = buttons.first # we assume that just one button is pressed
+        params[:dir] = buttons.first.to_s # we assume that just one button is pressed
         @device = eval_buttons
         #display
         case session[:menu] 
@@ -57,6 +57,8 @@ include SolarControl
           when WAIT_FOR_START then wait_for_start
         end
         #debug info        
+        puts "params[:dir]: #{params[:dir]}"
+        puts "session[:menu]: #{session[:menu]}"
         puts "session[:menu]: #{session[:menu]}"
         puts "session[:device]: #{session[:device]}"
         puts "session[:program]: #{session[:program]}"
