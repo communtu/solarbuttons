@@ -45,6 +45,7 @@ include SolarControl
     set_font(0)
     main_menu 
     loop do
+      wait_ms(200)
       update_buttons
       bp = buttons_pressed
       if !bp.empty?
