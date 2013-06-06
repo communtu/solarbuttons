@@ -33,6 +33,9 @@ include SolarControl
     @session = {}
     @device = init_session
     params = {}
+    # initialise raspi LCD display
+    raspi_lcd_hw_init 
+    init
     clear_screen
     set_backlight(1)
     set_font(0) 
