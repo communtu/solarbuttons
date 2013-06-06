@@ -77,16 +77,18 @@ include SolarControl
   
   def self.main_menu
     puts "main_menu"
-    y = 4
-    OURDEVICES.each do |name, data|
-      if name == @device[0] 
-        print_xy(0,y, name+"<--") 
+    i=0
+    s=OURDEVICES.map do |name, data|
+      if name == @device[0] then
+        ind = i
+        i+=1
+        name
       else
-        print_xy(0,y, name) 
+        i+=1
+        name 
       end
-      y+=10
     end
-    write_framebuffer
+    display(s,ind)
   end
   
   def self.program_selection
@@ -100,5 +102,21 @@ include SolarControl
   def self.wait_for_start
     puts "wait_for_start"
   end
-  
+
+  def self.display(s,i)
+    # we can display at most 6 strings
+    s_ind = 0
+    e_ind = s.length
+    if e_ind > 5 then
+      s_ind = [i-2,0].max
+      e_ind = s_ind+5
+    end
+    y = 4
+    for j in (s_ind..e_ind) do
+      str = s[i][0,16]
+      print_xy(0,y, str+(if i==j then "<--" else "" end)) 
+      y+=10
+    end
+    write_framebuffer
+  end  
 end
