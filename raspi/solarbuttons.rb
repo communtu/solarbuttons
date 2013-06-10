@@ -113,10 +113,32 @@ include SolarControl
   
   def self.time_selection
     puts "time_selection"
+    clear_screen
+    print_xy(0,4, "Dauer des gewählten Programms:")
+    print_xy(10,4, "#{session[:duration][0]}:#{session[:duration][1]}")
+    print_xy(20,4, "Wann soll die Maschine spätestens fertig sein?")
+    d = if session[:day] == 0 then "Heute" else "Morgen" end
+    t = ""  
+    (0..session[:time].length-1).each do |digit| 
+      if digit == 1 
+         s << ":"
+      end  
+      if digit == session[:tindex] then
+        s << "[" 
+      end 
+      s << "%02d" % session[:time][digit] 
+      if digit == session[:tindex] then 
+        s << "]" 
+      end 
+    end 
+    print_xy(30, "#{d} um #{s} Uhr")
+    write_framebuffer
   end
   
   def self.wait_for_start
     puts "wait_for_start"
+    print_xy(0,4,"Auf den Start der Maschine warten...")
+    write_framebuffer
   end
 
   def self.display(s,i)
