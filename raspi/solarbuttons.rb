@@ -114,7 +114,7 @@ include SolarControl
   def self.time_selection
     puts "time_selection"
     clear_screen
-    print_xy(0,4, "Dauer des gewählten Programms:")
+    print_xy(0,4, "Dauer des Programms:")
     print_xy(10,4, "#{session[:duration][0]}:#{session[:duration][1]}")
     print_xy(20,4, "Wann soll die Maschine spätestens fertig sein?")
     d = if session[:day] == 0 then "Heute" else "Morgen" end
