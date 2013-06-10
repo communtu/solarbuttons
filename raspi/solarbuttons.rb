@@ -140,7 +140,8 @@ include SolarControl
   
   def self.wait_for_start
     puts "wait_for_start"
-    print_xy(0,4,"Bitte Maschine starten")
+    print_xy(0,4,"Bitte Maschine")
+    print_xy(0,14, "starten")
     write_framebuffer
   end
 
