@@ -131,7 +131,7 @@ include SolarControl
         s << "]" 
       end 
     end 
-    print_xy(30, "#{d} um #{s} Uhr")
+    print_xy(30,4, "#{d} um #{s} Uhr")
     write_framebuffer
   end
   
