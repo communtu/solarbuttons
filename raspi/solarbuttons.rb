@@ -1,3 +1,4 @@
+# encoding: UTF-8
 require 'scanf'
 require 'lib/solar_control'
 require 'raspi_lcd'
