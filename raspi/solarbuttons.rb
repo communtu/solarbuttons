@@ -117,7 +117,8 @@ include SolarControl
     clear_screen
     print_xy(0,4, "Dauer des Programms:")
     print_xy(0,14, "#{session[:duration][0]}:#{session[:duration][1]}")
-    print_xy(0,24, "Wann soll die Maschine spätestens fertig sein?")
+    print_xy(0,24, "Wann soll die Maschine")
+    print_xy(0,34, "spätestens fertig sein?")
     d = if session[:day] == 0 then "Heute" else "Morgen" end
     s = ""  
     (0..session[:time].length-1).each do |digit| 
@@ -132,7 +133,7 @@ include SolarControl
         s << "]" 
       end 
     end 
-    print_xy(0,34, "#{d} um #{s} Uhr")
+    print_xy(0,44, "#{d} um #{s} Uhr")
     write_framebuffer
   end
   
