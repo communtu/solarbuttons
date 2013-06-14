@@ -165,7 +165,7 @@ include SolarControl
       print_encoded_xy(0,y, str+(if i==j then "<--" else "" end)) 
       y+=10
       if heading and j==s_ind then
-        for x in (0..(8*s[0].length))
+        for x in (0..(6*s[0].length))
           put_pixel(x,y,1)
         end
         y+=4
