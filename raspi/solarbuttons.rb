@@ -186,11 +186,11 @@ include SolarControl
     write_framebuffer
   end  
   
-  def switch(on)
+  def self.switch(on)
     system "hexaswitch -i #{SETTINGS[:switch_ip]} -c set -e 1 -d 1 -v #{on ? 1 : 0}"
   end
   
-  def energy_consumption
+  def self.energy_consumption
     return Time.now.sec # dummy implementation
   end
 end
