@@ -109,7 +109,7 @@ include SolarControl
         selection = selection[session[:program][level]][1].to_a
       end
     end   
-    display(s,session[:program][session[:level]]+1)
+    display(s,session[:program][session[:level]]+1,true)
   end
   
   def self.time_selection
