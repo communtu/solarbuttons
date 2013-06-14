@@ -49,8 +49,9 @@ include SolarControl
     loop do
       sleep_ms(200)
       screen_saver_cnt += 200 
-      if screen_saver_cnt > 5000
+      if screen_saver_cnt > 10000
         set_backlight(0)        
+        screen_saver_cnt = 0 
       end 
       update_buttons
       bp = buttons_pressed
