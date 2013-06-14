@@ -153,10 +153,10 @@ include SolarControl
     print_encoded_xy(0,4,"Bitte Maschine")
     print_encoded_xy(0,14, "starten")
     write_framebuffer
-    switch(on)
+    switch(true)
     while(energy_consumption < 30) do
     end
-    switch(off)
+    switch(false)
   end
 
   def self.display(s,i=-1,heading=false)
