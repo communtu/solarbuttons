@@ -44,12 +44,19 @@ include SolarControl
     clear_screen
     set_backlight(1)
     set_font(0)
-    main_menu 
+    main_menu
+    screen_saver_cnt = 0 
     loop do
       sleep_ms(200)
+      screen_saver_cnt += 200 
+      if screen_saver_cnt > 5000
+        set_backlight(0)        
+      end 
       update_buttons
       bp = buttons_pressed
       if !bp.empty?
+        screen_saver_cnt = 0 
+        set_backlight(1)
         params[:dir] = buttons.first.to_s # we assume that just one button is pressed
         @device = eval_buttons
         #display
