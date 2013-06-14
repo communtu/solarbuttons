@@ -157,9 +157,9 @@ include SolarControl
     y = 0
     for j in (s_ind..e_ind) do
       if heading and j==s_ind then
-        str = s[0][0,16]        
+        str = s[0][0,21]        
       else
-        str = s[j][0,16]
+        str = s[j][0,21]
       end  
       print_encoded_xy(0,y, str+(if i==j then "<--" else "" end)) 
       y+=10
