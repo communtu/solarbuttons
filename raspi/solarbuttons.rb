@@ -115,11 +115,11 @@ include SolarControl
   def self.time_selection
     puts "time_selection"
     clear_screen
-    print_xy(0,4, "Dauer des Programms:")
-    print_xy(0,14, "#{session[:duration][0]}:#{session[:duration][1]}")
-    print_xy(0,24, "Wann soll die Maschi-")
-    print_xy(0,34, "ne spätestens")
-    print_xy(0,44, "fertig sein?")
+    print_encoded_xy(0,4, "Dauer des Programms:")
+    print_encoded_xy(0,14, "#{session[:duration][0]}:#{session[:duration][1]}")
+    print_encoded_xy(0,24, "Wann soll die Maschi-")
+    print_encoded_xy(0,34, "ne spätestens")
+    print_encoded_xy(0,44, "fertig sein?")
     d = if session[:day] == 0 then "Heute" else "Morgen" end
     s = ""  
     (0..session[:time].length-1).each do |digit| 
@@ -134,14 +134,14 @@ include SolarControl
         s << "]" 
       end 
     end 
-    print_xy(0,54, "#{d} um #{s} Uhr")
+    print_encoded_xy(0,54, "#{d} um #{s} Uhr")
     write_framebuffer
   end
   
   def self.wait_for_start
     puts "wait_for_start"
-    print_xy(0,4,"Bitte Maschine")
-    print_xy(0,14, "starten")
+    print_encoded_xy(0,4,"Bitte Maschine")
+    print_encoded_xy(0,14, "starten")
     write_framebuffer
   end
 
@@ -156,7 +156,7 @@ include SolarControl
     y = 4
     for j in (s_ind..e_ind) do
       str = s[j][0,16]
-      print_xy(0,y, str+(if i==j then "<--" else "" end)) 
+      print_encoded_xy(0,y, str+(if i==j then "<--" else "" end)) 
       y+=10
     end
     write_framebuffer
