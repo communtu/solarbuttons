@@ -90,7 +90,8 @@ include SolarControl
         name 
       end
     end
-    display(s,ind)
+    s = ["SolarWash-Steuerung","Spare Energie","","Bitte ein Gerät auswählen:"]+s
+    display(s,ind,true)
   end
   
   def self.program_selection
