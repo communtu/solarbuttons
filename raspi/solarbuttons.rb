@@ -153,6 +153,10 @@ include SolarControl
     print_encoded_xy(0,4,"Bitte Maschine")
     print_encoded_xy(0,14, "starten")
     write_framebuffer
+    switch(on)
+    while(energy_consumption < 30) do
+    end
+    switch(off)
   end
 
   def self.display(s,i=-1,heading=false)
@@ -181,4 +185,12 @@ include SolarControl
     end
     write_framebuffer
   end  
+  
+  def switch(on)
+    system "hexaswitch -i #{SETTINGS[:switch_ip]} -c set -e 1 -d 1 -v #{on ? 1 : 0}"
+  end
+  
+  def energy_consumption
+    return Time.now.sec # dummy implementation
+  end
 end
