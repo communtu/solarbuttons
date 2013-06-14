@@ -3,7 +3,9 @@ module SolarControl
 MAIN_MENU = 0
 PROGRAM_SELECTION = 1
 TIME_SELECTION = 2
-WAIT_FOR_START = 3
+WAIT_FOR_USER_TO_START = 3
+WAIT_FOR_MACHINE_START = 4
+WAIT_FOR_FINISH = 5
 
 def init_session
   session[:menu] = MAIN_MENU if session[:menu].blank?
@@ -91,7 +93,11 @@ def eval_buttons
             adjust_day
         end
      
-        when WAIT_FOR_START then
+        when WAIT_FOR_USER_TO_START then
+          if params[:dir] == 'left' then session[:menu] -= 1 else true end
+        when WAIT_FOR_MACHINE_START then
+          if params[:dir] == 'left' then session[:menu] -= 1 else true end
+        when WAIT_FOR_FINISH then    
           if params[:dir] == 'left' then session[:menu] -= 1 else true end
     end
     if session[:menu] < 0 then session[:menu] = 0 end   

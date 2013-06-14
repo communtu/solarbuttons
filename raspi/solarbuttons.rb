@@ -66,7 +66,9 @@ include SolarControl
           when MAIN_MENU then main_menu
           when PROGRAM_SELECTION then program_selection
           when TIME_SELECTION then time_selection
-          when WAIT_FOR_START then wait_for_start
+          when WAIT_FOR_USER_TO_START then wait_for_user_to_start
+          when WAIT_MACHINE_START then wait_for_machine_start
+          when WAIT_FOR_FINISH then wait_for_finish
         end
         #debug info        
         puts "params[:dir]: #{params[:dir]}"
@@ -148,18 +150,29 @@ include SolarControl
     display(msg)
   end
   
-  def self.wait_for_start
-    puts "wait_for_start"
-    print_encoded_xy(0,4,"Bitte Maschine")
-    print_encoded_xy(0,14, "starten")
-    write_framebuffer
+  def self.wait_for_user_to_start
+    puts "wait_for_user_to_start"
+    display("Bitte Wäsche einlegen\nWaschmittel einfüllen\nProgramm wählen\nund Maschine starten")
     switch(true)
     while(energy_consumption < 30) do
     end
     switch(false)
   end
 
+  def self.wait_for_machine_start
+    puts "wait_for_machine_to_start"
+    display(["Start der","um"])
+  end  
+  
+  def self.wait_for_finish
+    
+  end
+
+
   def self.display(s,i=-1,heading=false)
+    if s.class==String
+      s=s.split("\n")
+    end
     # we can display at most 6 strings
     s_ind = 0
     e_ind = s.length-1
