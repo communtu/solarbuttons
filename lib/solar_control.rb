@@ -102,7 +102,7 @@ def eval_buttons
       menu_depth = menu_depth.to_a[session[:program][i]][1] 
     end
     session[:program][-1] %= menu_depth.length
-    return @device
+    return OURDEVICES.to_a[session[:device].to_i]
 end
 
   def adjust_day
