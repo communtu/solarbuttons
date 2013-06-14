@@ -115,6 +115,7 @@ include SolarControl
   def self.time_selection
     puts "time_selection"
     clear_screen
+    msg = []
     msg << "Dauer des Programms:"
     msg << "#{session[:duration][0]}:#{session[:duration][1]}"
     msg << "Wann soll die Maschi-"
