@@ -115,11 +115,11 @@ include SolarControl
   def self.time_selection
     puts "time_selection"
     clear_screen
-    print_encoded_xy(0,4, "Dauer des Programms:")
-    print_encoded_xy(0,14, "#{session[:duration][0]}:#{session[:duration][1]}")
-    print_encoded_xy(0,24, "Wann soll die Maschi-")
-    print_encoded_xy(0,34, "ne spätestens")
-    print_encoded_xy(0,44, "fertig sein?")
+    msg << "Dauer des Programms:"
+    msg << "#{session[:duration][0]}:#{session[:duration][1]}"
+    msg << "Wann soll die Maschi-"
+    msg << "ne spätestens"
+    msg << "fertig sein?"
     d = if session[:day] == 0 then "Heute" else "Morgen" end
     s = ""  
     (0..session[:time].length-1).each do |digit| 
@@ -134,8 +134,8 @@ include SolarControl
         s << "]" 
       end 
     end 
-    print_encoded_xy(0,54, "#{d} um #{s} Uhr")
-    write_framebuffer
+    msg << "#{d} um #{s} Uhr"
+    display(msg)
   end
   
   def self.wait_for_start
@@ -145,7 +145,7 @@ include SolarControl
     write_framebuffer
   end
 
-  def self.display(s,i)
+  def self.display(s,i=-1,heading=false)
     # we can display at most 6 strings
     s_ind = 0
     e_ind = s.length-1
@@ -153,11 +153,17 @@ include SolarControl
       s_ind = [i-2,0].max
       e_ind = [s_ind+5,s.length-1].min
     end
-    y = 4
+    y = 0
     for j in (s_ind..e_ind) do
       str = s[j][0,16]
       print_encoded_xy(0,y, str+(if i==j then "<--" else "" end)) 
       y+=10
+      if heading and j==s_ind then
+        for x in (0..100)
+          put_pixel(x,y,1)
+        end
+        y+=4
+      end
     end
     write_framebuffer
   end  
