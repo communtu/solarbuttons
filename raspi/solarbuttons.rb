@@ -21,6 +21,7 @@ class Object
     respond_to?(:empty?) ? empty? : !self
   end
 end
+
 class RaspiControl
 
 include SolarControl
@@ -67,8 +68,7 @@ include SolarControl
           when PROGRAM_SELECTION then program_selection
           when TIME_SELECTION then time_selection
           when WAIT_FOR_USER_TO_START then wait_for_user_to_start
-          when WAIT_MACHINE_START then wait_for_machine_start
-          when WAIT_FOR_FINISH then wait_for_finish
+          when DEVICE_MENU then device_menu
         end
         #debug info        
         puts "params[:dir]: #{params[:dir]}"
@@ -159,15 +159,11 @@ include SolarControl
     switch(false)
   end
 
-  def self.wait_for_machine_start
-    puts "wait_for_machine_to_start"
+  def self.device_menu
+    puts "device_menu"
     display(["Start der","um"])
   end  
   
-  def self.wait_for_finish
-    
-  end
-
 
   def self.display(s,i=-1,heading=false)
     if s.class==String

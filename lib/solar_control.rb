@@ -4,8 +4,7 @@ MAIN_MENU = 0
 PROGRAM_SELECTION = 1
 TIME_SELECTION = 2
 WAIT_FOR_USER_TO_START = 3
-WAIT_FOR_MACHINE_START = 4
-WAIT_FOR_FINISH = 5
+DEVICE_MENU = 4
 
 def init_session
   session[:menu] = MAIN_MENU if session[:menu].blank?
@@ -13,6 +12,12 @@ def init_session
   session[:program] = [0] if session[:program].blank?
   session[:level] = 0 if session[:level].blank?
   session[:tindex] = 0 if session[:tindex].blank?
+  if session[:running].blank? then
+    session[:running] = {}
+    OURDEVICES.each do |d,i|
+      session[:running][d] = {:running => false, :start => nil, :end => nil}
+    end  
+  end   
   return OURDEVICES.to_a[session[:device].to_i]
 end  
 
@@ -20,6 +25,7 @@ def eval_buttons
     @device = OURDEVICES.to_a[session[:device].to_i]
     case session[:menu]
       when MAIN_MENU then
+        session[:level] = 0
         case params[:dir]
           when 'up', 'down' then session[:device] += if params[:dir] == 'up' then -1 else 1 end
             session[:program] = [0]
@@ -94,11 +100,15 @@ def eval_buttons
         end
      
         when WAIT_FOR_USER_TO_START then
-          if params[:dir] == 'left' then session[:menu] -= 1 else true end
-        when WAIT_FOR_MACHINE_START then
-          if params[:dir] == 'left' then session[:menu] -= 1 else true end
-        when WAIT_FOR_FINISH then    
-          if params[:dir] == 'left' then session[:menu] -= 1 else true end
+          if params[:dir] == 'left' then session[:menu] -= 1 end
+          if params[:dir] == 'right' 
+             session[:menu] = MAIN_MENU
+             tend = time_to_ruby_time(session[:time],session[:day])
+             tstart = tend-60*time_to_mins(session[:duration])
+             session[:running][@device[0]] = {:running => false, :start => tstart, :end => tend}  
+          end
+        when DEVICE_MENU then
+          if params[:dir] == 'left' then session[:menu] -= 1 end
     end
     if session[:menu] < 0 then session[:menu] = 0 end   
     if session[:level] < 0 then session[:level] = 0 end   
@@ -132,6 +142,10 @@ end
     time[0]*60+time[1]
   end
   
+  def time_to_ruby_time(time,day)
+    (Date.today+day).to_time+60*time_to_mins(time)
+  end
+    
   def day_change_thres(time)
     time_to_mins(time)+(24-time[0])*60+time[1]
   end
