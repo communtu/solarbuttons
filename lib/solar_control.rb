@@ -29,6 +29,7 @@ end
 
 def eval_buttons
     @device = OURDEVICES.to_a[session[:device].to_i]
+    @run = session[:running][@device[0]]
     case session[:menu]
       when MAIN_MENU then
         session[:level] = 0
@@ -109,8 +110,13 @@ def eval_buttons
             session[:debug_ref_time] = time_to_mins(session[:ref_time])
             adjust_day
         end
-     
-        when WAIT_FOR_USER_TO_START then
+        if !@run[:start].nil? then
+          if session[:menu] != TIME_SELECTION
+            session[:menu] = MAIN_MENU
+          end
+        end
+        
+      when WAIT_FOR_USER_TO_START then
           if params[:dir] == 'left' then session[:menu] -= 1 end
           if params[:dir] == 'right' 
              session[:menu] = MAIN_MENU
@@ -120,11 +126,11 @@ def eval_buttons
           end
         when DEVICE_MENU then
           if params[:dir] == 'left' then session[:menu] = MAIN_MENU end
+          if params[:dir] == 'right' then session[:menu] = TIME_SELECTION end
           if params[:dir] == 'center' then
-            s = session[:running][@device[0]]
-            duration = s[:end] - s[:start]
-            s[:start] = Time.now
-            s[:end] = s[:start] + duration
+            duration = @run[:end] - @run[:start]
+            @run[:start] = Time.now
+            @run[:end] = @run[:start] + duration
             session[:menu] = MAIN_MENU 
           end
     end
