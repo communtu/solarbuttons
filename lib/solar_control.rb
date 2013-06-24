@@ -1,3 +1,9 @@
+class Time
+  def show
+    if !self.today? then "morgen um " else "" end + strftime("%H:%M") + "h"
+  end  
+end
+
 module SolarControl
 
 MAIN_MENU = 0
@@ -29,7 +35,12 @@ def eval_buttons
         case params[:dir]
           when 'up', 'down' then session[:device] += if params[:dir] == 'up' then -1 else 1 end
             session[:program] = [0]
-          when 'center', 'right' then session[:menu] += 1
+          when 'center', 'right' then 
+            if session[:running][@device[0]][:start].nil? 
+              session[:menu] += 1
+            else
+              session[:menu] = DEVICE_MENU  
+            end  
           when 'left' then session[:menu] -= 1
         end
       when PROGRAM_SELECTION then
@@ -108,7 +119,14 @@ def eval_buttons
              session[:running][@device[0]] = {:running => false, :start => tstart, :end => tend}  
           end
         when DEVICE_MENU then
-          if params[:dir] == 'left' then session[:menu] -= 1 end
+          if params[:dir] == 'left' then session[:menu] = MAIN_MENU end
+          if params[:dir] == 'center' then
+            s = session[:running][@device[0]]
+            duration = s[:end] - s[:start]
+            s[:start] = Time.now
+            s[:end] = s[:start] + duration
+            session[:menu] = MAIN_MENU 
+          end
     end
     if session[:menu] < 0 then session[:menu] = 0 end   
     if session[:level] < 0 then session[:level] = 0 end   

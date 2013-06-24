@@ -2,10 +2,18 @@
   <%OURDEVICES.each do |name, data|%>
   <tr>
     <% if name == @device[0] %>
-    <td><b><%= name %></b></td>
+    <td><b><%= name %></b>
       <% else%>
-      <td><%= name %></td>
-     <%end%>
+      <td><%= name %>
+    <%end%>
+    <% if !(s=@running[name]).blank? %>
+      <% if s[:running] %>
+        läuft bis <%= s[:end].show%>
+      <% elsif !s[:start].nil? %>
+        startet um <%= s[:start].show%>
+     <%end%>   
+    <%end%>   
+    </td>
    </tr>
    <% end %>
 </table>

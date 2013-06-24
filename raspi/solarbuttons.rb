@@ -152,7 +152,7 @@ include SolarControl
   
   def self.wait_for_user_to_start
     puts "wait_for_user_to_start"
-    display("Bitte Wäsche einlegen\nWaschmittel einfüllen\nProgramm wählen\nund Maschine starten")
+    display("Bitte Wäsche einlegen\nProgramm wählen\nund Maschine starten")
     switch(true)
     while(energy_consumption < 30) do
     end

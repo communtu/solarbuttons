@@ -1,5 +1,6 @@
 Solarbuttons::Application.routes.draw do
   get "home/index"
+  get "home/reset"
 
   match "/home/:dir", :to => "home#push_button"
 

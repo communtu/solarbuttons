@@ -11,6 +11,8 @@
 <%= "time_to_mins(session[:time]): #{session[:debug_curr_time]}" %><br>
 <%= "session[:day_change_thres]: #{session[:day_change_thres]}"%><br>
 <%= "session[:running]: #{session[:running].inspect}"%><br>
+
+<%= link_to "reset", :action => 'reset'%>
 	
 <table>	
   <tr><td class="middle">
@@ -19,8 +21,7 @@
           when PROGRAM_SELECTION then render :partial => 'program_selection'
           when TIME_SELECTION then render :partial => 'time_selection'
           when WAIT_FOR_USER_TO_START then render :partial => 'wait_for_start'
-          when WAIT_FOR_MACHINE_START then render :partial => 'wait_for_machine_start'
-          when WAIT_FOR_FINISH then render :partial => 'wait_for_finish'
+          when DEVICE_MENU then render :partial => 'device_menu'
        end %>
   </td></tr>
 </table>	
