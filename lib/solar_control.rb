@@ -113,6 +113,10 @@ def eval_buttons
         if !@run[:start].nil? then
           if session[:menu] != TIME_SELECTION
             session[:menu] = MAIN_MENU
+            # code dup!
+             tend = time_to_ruby_time(session[:time],session[:day])
+             tstart = tend-60*time_to_mins(session[:duration])
+             session[:running][@device[0]] = {:running => false, :start => tstart, :end => tend}  
           end
         end
         
