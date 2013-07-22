@@ -1,7 +1,7 @@
 class Time
   def show
     if !self.today? then "morgen um " else "" end + strftime("%H:%M") + "h"
-  end  
+  end 
 end
 
 module SolarControl

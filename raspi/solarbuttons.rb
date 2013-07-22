@@ -22,6 +22,12 @@ class Object
   end
 end
 
+class Time
+  def today?
+    self.to_date == ::Date.current # we need the to_date because of DateTime
+  end 
+end
+
 class RaspiControl
 
 include SolarControl
@@ -109,7 +115,7 @@ include SolarControl
         end   
       end   
     end
-    display(str,ind+4,true)
+    display(str,ind+1,true)
   end
   
   def self.program_selection
