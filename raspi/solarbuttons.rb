@@ -92,24 +92,24 @@ include SolarControl
     i=0
     ind=0
     running = session[:running]
-    s = ["SolarWash-Steuerung","Wähle ein Gerät aus:"]
+    str = ["SolarWash-Steuerung","Wähle ein Gerät aus:"]
     OURDEVICES.each do |name, data|
       if name == @device[0] then
         ind = i
       end  
       i+=1
-      s << name
+      str << name
       if !(s=running[name]).blank? 
         if s[:running]
-          s << "bis #{s[:end].show}"
+          str << "bis #{s[:end].show}"
           i+=1
         elsif !s[:start].nil? 
-          s << "start #{s[:start].show}"
+          str << "start #{s[:start].show}"
           i+=1
         end   
       end   
     end
-    display(s,ind+4,true)
+    display(str,ind+4,true)
   end
   
   def self.program_selection
