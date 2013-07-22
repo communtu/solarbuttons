@@ -172,7 +172,11 @@ include SolarControl
     display("Bitte Wäsche einlegen\nProgramm wählen\nund Maschine starten")
     switch(true)
     # wait for power consumption of more than 30 Watts
-    while(@db.execute( "select * from '20cfb985-fb7a-4d5f-acc4-7c10710f85b6' ORDER BY timestamp DESC LIMIT 1")[0][1] < 30) do
+    consumption = 0
+    while(consumption < 30) do
+      last_row = @db.execute( "select * from '20cfb985-fb7a-4d5f-acc4-7c10710f85b6' ORDER BY timestamp DESC LIMIT 1")[0]
+      puts last_row
+      consumption = last_row[1]
     end
     switch(false)
   end
