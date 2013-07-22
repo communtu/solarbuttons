@@ -24,7 +24,8 @@ end
 
 class Time
   def today?
-    self.to_date == ::Date.current # we need the to_date because of DateTime
+    t = Time.now
+    self.day == t.day and self.mon == t.mon and self.year == t.year
   end 
 end
 
