@@ -173,7 +173,7 @@ include SolarControl
     switch(true)
     # wait for power consumption of more than 30 Watts
     consumption = 0
-    while(consumption < 30) do
+    while(consumption < 20) do
       last_row = @db.execute( "select * from '20cfb985-fb7a-4d5f-acc4-7c10710f85b6' ORDER BY timestamp DESC LIMIT 1")[0]
       puts last_row
       consumption = last_row[1]
