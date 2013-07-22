@@ -161,7 +161,14 @@ include SolarControl
 
   def self.device_menu
     puts "device_menu"
-    display(["Start der","um"])
+    strs = ["Start",@device[0],"um"]
+    if !(s=@running[name]).blank?
+      strs << "#{s[:start].strftime("%H:%M")}h - #{s[:end].strftime("%H:%M")}h"
+    end
+    strs << "Links = zurück"
+    strs << "Mitte = sofort starten"
+    strs << "Rechts = Zeit ändern"
+    display(strs)
   end  
   
 
