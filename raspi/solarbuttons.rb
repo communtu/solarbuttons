@@ -30,6 +30,7 @@ end
 
 class RaspiControl
 
+require "sqlite3"
 include SolarControl
 
   def self.session
@@ -52,7 +53,9 @@ include SolarControl
     set_backlight(1)
     set_font(0)
     main_menu
-    screen_saver_cnt = 0 
+    screen_saver_cnt = 0
+    # db connection for reading sensor data
+    @db = SQLite3::Database.new(SETTINGS[:db]) 
     loop do
       sleep_ms(200)
       screen_saver_cnt += 200 
@@ -115,7 +118,7 @@ include SolarControl
         end   
       end   
     end
-    display(str,ind+1,true)
+    display(str,ind+2,true)
   end
   
   def self.program_selection
@@ -168,7 +171,8 @@ include SolarControl
     puts "wait_for_user_to_start"
     display("Bitte Wäsche einlegen\nProgramm wählen\nund Maschine starten")
     switch(true)
-    while(energy_consumption < 30) do
+    # wait for power consumption of more than 30 Watts
+    while(@db.execute( "select * from '20cfb985-fb7a-4d5f-acc4-7c10710f85b6' ORDER BY timestamp DESC LIMIT 1")[0][1] < 30) do
     end
     switch(false)
   end

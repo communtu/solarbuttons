@@ -2,3 +2,4 @@
   Waschmaschine: Miele W6000 WPS Primavera Plus
   Trockner: Miele T8861 WP Edition 111
 :switch_ip: bc::50:c4ff:fe04:8431
+:db "/home/pi/hexalog.klio"
