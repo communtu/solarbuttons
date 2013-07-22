@@ -91,17 +91,24 @@ include SolarControl
     puts "main_menu"
     i=0
     ind=0
-    s=OURDEVICES.map do |name, data|
+    running = session[:running]
+    s = ["SolarWash-Steuerung","Wähle ein Gerät aus:"]
+    OURDEVICES.each do |name, data|
       if name == @device[0] then
         ind = i
-        i+=1
-        name
-      else
-        i+=1
-        name 
-      end
+      end  
+      i+=1
+      s << name
+      if !(s=running[name]).blank? 
+        if s[:running]
+          s << "bis #{s[:end].show}"
+          i+=1
+        elsif !s[:start].nil? 
+          s << "start #{s[:start].show}"
+          i+=1
+        end   
+      end   
     end
-    s = ["SolarWash-Steuerung","Spare Energie","","Wähle ein Gerät aus:"]+s
     display(s,ind+4,true)
   end
   
