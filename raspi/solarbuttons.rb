@@ -114,7 +114,7 @@ include SolarControl
           str << "bis #{s[:end].show}"
           i+=1
         elsif !s[:start].nil? 
-          str << "start #{s[:start].show}"
+          str << "Start #{s[:start].show}"
           i+=1
         end   
       end   
