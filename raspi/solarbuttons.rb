@@ -82,6 +82,7 @@ include SolarControl
         puts "time_to_mins(session[:ref_time]): #{session[:debug_ref_time]}" 
         puts "time_to_mins(session[:time]): #{session[:debug_curr_time]}" 
         puts "session[:day_change_thres]: #{session[:day_change_thres]}"
+        puts "session[:running]: #{session[:running].inspect}"
       end  
     end
   end
@@ -163,7 +164,7 @@ include SolarControl
     puts "device_menu"
     strs = ["Start",@device[0],"um"]
     if !(s=session[:running][name]).blank?
-      strs << "#{s[:start].strftime("%H:%M")}h - #{s[:end].strftime("%H:%M")}h"
+      strs << "#{s[:start].strftime('%H:%M')}h - #{s[:end].strftime('%H:%M')}h"
     end
     strs << "Links = zurück"
     strs << "Mitte = sofort starten"
