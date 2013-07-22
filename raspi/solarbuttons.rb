@@ -162,7 +162,7 @@ include SolarControl
   def self.device_menu
     puts "device_menu"
     strs = ["Start",@device[0],"um"]
-    if !(s=@running[name]).blank?
+    if !(s=session[:running][name]).blank?
       strs << "#{s[:start].strftime("%H:%M")}h - #{s[:end].strftime("%H:%M")}h"
     end
     strs << "Links = zurück"
