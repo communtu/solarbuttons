@@ -175,7 +175,7 @@ include SolarControl
     # wait for power consumption of more than 30 Watts
     consumption = 0
     while(consumption < 20) do
-      last_row = @db.execute( "select * from '20cfb985-fb7a-4d5f-acc4-7c10710f85b6' ORDER BY timestamp DESC LIMIT 1")[0]
+      last_row = db_last_row(@db)
       puts last_row
       consumption = last_row[1]
     end
@@ -232,4 +232,17 @@ include SolarControl
   def self.energy_consumption
     return Time.now.sec # dummy implementation
   end
+  
+  def self.db_last_row(db)
+    row = nil
+    while row.nil?
+      begin
+        row = db.execute( "select * from '20cfb985-fb7a-4d5f-acc4-7c10710f85b6' ORDER BY timestamp DESC LIMIT 1")[0]
+      rescue
+        row = nil
+      end
+    end
+    return row      
+  end
+  
 end
